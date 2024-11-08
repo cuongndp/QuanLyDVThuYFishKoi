@@ -1,0 +1,345 @@
+﻿@{
+    ViewBag.Title = "Admin Dashboard";
+    Layout = null; // Không sử dụng layout cũ
+}
+
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <link rel="stylesheet" href="~/css/admin.css"> <!-- Thêm đường dẫn đến file CSS tùy chỉnh -->
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            padding: 20px;
+        }
+
+        .table-container {
+            overflow-x: auto; /* Tạo thanh cuộn ngang khi cần */
+            max-width: 100%; /* Giới hạn chiều rộng để phù hợp với kích thước của trang */
+            white-space: nowrap; /* Không cho nội dung xuống dòng */
+        }
+
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+            .header h1 {
+                font-size: 2em;
+                color: #333;
+            }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f8f8f8;
+        }
+
+        .btn {
+            padding: 8px 12px;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .btn-edit {
+            background-color: #007bff;
+        }
+
+        .btn-delete {
+            background-color: #dc3545;
+        }
+
+
+
+
+
+
+
+        .logout-button-unique {
+            background-color: #ff6347; /* Màu cam đỏ nổi bật */
+            color: white;
+            padding: 8px 16px;
+            text-decoration: none;
+            border-radius: 5px;
+            border: none;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+            .logout-button-unique:hover {
+                background-color: #e5533c; /* Màu hơi tối hơn khi hover */
+            }
+
+        .logged-in-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            font-size: 1.1em;
+        }
+    </style>
+</head>
+<body>
+    <ul class="user-auth-menu">
+        @if (Session["FullName"] != null)
+        {
+            <li class="logged-in-info">
+                <span>Xin chào, @Session["FullName"]!</span>
+                <a href="@Url.Action("Logout", "Account")" class="logout-button-unique">Đăng xuất</a>
+            </li>
+        }
+        else
+        {
+            <li>@Html.ActionLink("Đăng ký", "Register", "Account")</li>
+            <li>@Html.ActionLink("Đăng nhập", "Login", "Account")</li>
+        }
+    </ul>
+
+    <div class="container table-container">
+        <div class="header">
+            <h1>Quản Lý Dịch Vụ và Người Dùng</h1>
+        </div>
+
+        <!-- Bảng danh sách dịch vụ -->
+        <h2>Danh Sách Dịch Vụ</h2>
+        <table style="table-layout: fixed; width: 100%;">
+            <thead>
+                <tr>
+                    <th style="width: 5%;">ID</th>
+                    <th style="width: 25%;">Họ Và Tên</th> <!-- Tăng chiều rộng của cột Họ Và Tên -->
+                    <th style="width: 20%;">Địa Chỉ</th> <!-- Giảm chiều rộng của cột Địa Chỉ -->
+                    <th style="width: 10%;">Ngày Hẹn</th>
+                    <th style="width: 10%;">Giờ Hẹn</th>
+                    <th style="width: 15%;">Mô Tả</th> <!-- Giảm chiều rộng của cột Mô Tả -->
+                    <th style="width: 10%;">Giá Tiền</th>
+                    <th style="width: 10%;">Hành Động</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (ViewBag.Bookings != null)
+                {
+                    foreach (var booking in ViewBag.Bookings)
+                    {
+                        <tr>
+                            <!-- Hiển thị ID người dùng nếu thông tin người dùng có tồn tại -->
+                            <td>@(booking.User != null ? booking.User.Id : "Không có thông tin người dùng")</td>
+                            <td>@(booking.User != null ? booking.User.FullName : "Không có thông tin người dùng")</td>
+                            <td style="word-wrap: break-word; white-space: normal;">@booking.DiaChi</td>
+                            <td>@(booking.NgayHen != null ? booking.NgayHen.ToString("dd/MM/yyyy") : "Không có ngày hẹn")</td>
+                            <td>@booking.GioHen</td>
+                            <td style="word-wrap: break-word; white-space: normal;">@booking.MoTa</td>
+                            <td>@booking.GiaTien.ToString("N0") VND</td>
+                            <td>
+                                <a href="@Url.Action("AdminOnlyAction", "Admin", new { editBookingId = booking.Id })" class="btn btn-edit">Sửa</a> <!-- Đảm bảo sử dụng đúng tên tham số editBookingId -->
+                                <form action="@Url.Action("DeleteBooking", "Admin", new { id = booking.Id })" method="post" style="display:inline;">
+                                    @Html.AntiForgeryToken() <!-- Token chống CSRF để bảo mật -->
+                                    <button type="submit" class="btn btn-delete" onclick="return confirm('Bạn có chắc chắn muốn xóa thông tin này?');">Xóa</button>
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="7">Không có dữ liệu đặt lịch để hiển thị.</td> <!-- Thay đổi colspan cho phù hợp với số cột -->
+                    </tr>
+                }
+
+            </tbody>
+        </table>
+
+        <!-- Bảng danh sách người dùng -->
+        <h2>Danh Sách Người Dùng</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Họ và Tên</th>
+                    <th>Email</th>
+                    <th>Số Điện Thoại</th> <!-- Thêm cột Số Điện Thoại -->
+                    <th>Vai Trò</th>
+                    <th>Hành Động</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var user in ViewBag.Users)
+                {
+                    <tr>
+                        <td>@user.Id</td>
+                        <td>@user.FullName</td>
+                        <td>@user.Email</td>
+                        <td>@user.PhoneNumber</td> <!-- Số Điện Thoại -->
+                        <td>@user.Role</td>
+                        <td>
+                            <a href="@Url.Action("AdminOnlyAction", "Admin", new { editUserId = user.Id })" class="btn btn-edit">Sửa</a>
+
+                            <form action="@Url.Action("DeleteUser", "Admin", new { id = user.Id })" method="post" style="display:inline;">
+                                @Html.AntiForgeryToken() <!-- Token chống CSRF để bảo mật -->
+                                <button type="submit" class="btn btn-delete" onclick="return confirm('Bạn có chắc chắn muốn xóa người dùng này?');">Xóa</button>
+                            </form>
+
+                        </td>
+                    </tr>
+                }
+
+
+
+
+
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>
+
+
+@if (ViewBag.UserToEdit != null)
+{
+    <h3>Chỉnh Sửa Thông Tin Người Dùng</h3>
+    using (Html.BeginForm("EditUserInAdmin", "Admin", FormMethod.Post))
+    {
+        @Html.AntiForgeryToken() <!-- Thêm mã bảo mật để chống CSRF -->
+
+        <input type="hidden" name="Id" value="@ViewBag.UserToEdit.Id" />
+
+
+
+        <div class="form-group">
+            <label for="FullName">Họ và Tên</label>
+            <input type="text" name="FullName" value="@ViewBag.UserToEdit.FullName" class="form-control" />
+        </div>
+
+        <div class="form-group">
+            <label for="Email">Email</label>
+            <input type="email" name="Email" value="@ViewBag.UserToEdit.Email" class="form-control" />
+        </div>
+
+        <!-- Thêm mục chỉnh sửa Số Điện Thoại -->
+        <div class="form-group">
+            <label for="PhoneNumber">Số Điện Thoại</label>
+            <input type="text" name="PhoneNumber" value="@ViewBag.UserToEdit.PhoneNumber" class="form-control" />
+        </div>
+
+
+        <div class="form-group">
+            <label for="Role">Vai Trò</label>
+            <select name="Role" class="form-control">
+                <option value="Khách Hàng" @(ViewBag.UserToEdit.Role == "Khách Hàng" ? "selected" : "")>Khách Hàng</option>
+                <option value="Doctor" @(ViewBag.UserToEdit.Role == "Doctor" ? "selected" : "")>Doctor</option>
+                <option value="Admin" @(ViewBag.UserToEdit.Role == "Admin" ? "selected" : "")>Admin</option>
+            </select>
+        </div>
+
+        <button type="submit" style="background-color: #4CAF50; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer">Cập Nhật</button>
+    }
+}
+
+
+
+@if (ViewBag.BookingToEdit != null)
+{
+    <h3>Chỉnh Sửa Thông Tin Đặt Lịch</h3>
+    using (Html.BeginForm("EditBookings", "Admin", FormMethod.Post))
+    {
+        @Html.AntiForgeryToken() <!-- Thêm mã bảo mật để chống CSRF -->
+
+        <!-- Ẩn trường Id để giữ giá trị booking cần chỉnh sửa -->
+        <input type="hidden" name="Id" value="@ViewBag.BookingToEdit.Id" />
+        <!-- Thêm trường ẩn để lưu giá trị UserId -->
+        <input type="hidden" name="UserId" value="@ViewBag.BookingToEdit.UserId" />
+
+        <div class="form-group">
+            <label for="DiaChi">Địa Chỉ</label>
+            <input type="text" name="DiaChi" value="@ViewBag.BookingToEdit.DiaChi" class="form-control" required />
+        </div>
+
+        <div class="form-group">
+            <label for="NgayHen">Ngày Hẹn</label>
+            <input type="date" name="NgayHen" value="@ViewBag.BookingToEdit.NgayHen.ToString("yyyy-MM-dd")" class="form-control" required />
+        </div>
+
+        <div class="form-group">
+            <label for="GioHen">Giờ Hẹn</label>
+            <input type="time" name="GioHen" value="@ViewBag.BookingToEdit.GioHen.ToString(@"hh\:mm")" class="form-control" required />
+        </div>
+        <div class="form-group">
+            <label for="giaTien">Giá Tiền:</label>
+            <input type="number" id="giaTien" name="giaTien" step="10000" list="priceOptions"
+                   value="@ViewBag.BookingToEdit.GiaTien" required>
+            <span>VND</span>
+            <!-- Danh sách các giá tiền có sẵn để chọn -->
+            <datalist id="priceOptions">
+                <option value="100000"></option>
+                <option value="200000"></option>
+                <option value="300000"></option>
+                <option value="400000"></option>
+                <option value="500000"></option>
+            </datalist>
+        </div>
+
+        <div style="
+    width: 100%;
+    padding: 12px;
+    border: 2px solid #28a745;
+    border-radius: 10px;
+    font-size: 1.1em;
+    background-color: #f9f9f9;
+    color: #333;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;">
+
+            <label for="MoTa">Mô Tả Vấn Đề Của Cá Koi</label>
+
+            <textarea name="MoTa" rows="4" required style="
+        width: 100% !important;
+        padding: 12px !important;
+        border: 2px solid #28a745 !important;
+        border-radius: 10px !important;
+        font-size: 1.1em !important;
+        background-color: #f9f9f9 !important;
+        color: #333 !important;
+        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1) !important;
+        transition: border-color 0.3s ease, box-shadow 0.3s ease !important;">@ViewBag.BookingToEdit.MoTa</textarea>
+        </div>
+
+
+        <button type="submit" style="background-color: #4CAF50; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer">Cập Nhật</button>
+    }
+}
+
+

@@ -1,0 +1,143 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.Mvc;
+using System.Web.Security;
+using fish.Services.Interfaces;
+using Fish.Repositories.Models;
+
+namespace fish.WebApplication.Controllers
+{
+    
+    public class AccountController : Controller
+    {
+        private readonly IAccountService _accountService;
+
+        // Inject IAccountService thông qua constructor
+        public AccountController(IAccountService accountService)
+        {
+            _accountService = accountService;
+        }
+
+        public ActionResult Login()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult Login(string username, string password)
+        {
+            var user = _accountService.Login(username, password);
+            if (user != null)
+            {
+                Session["UserId"] = user.Id;
+                Session["FullName"] = user.FullName;
+                Session["PhoneNumber"] = user.PhoneNumber;
+                Session["Email"] = user.Email;
+                Session["Role"] = user.Role;
+
+
+
+                // Đặt cookie xác thực
+                FormsAuthentication.SetAuthCookie(username, false);
+
+
+                if (user.Role == "Admin")
+                    return RedirectToAction("AdminOnlyAction", "Admin");
+                if (user.Role == "Doctor")
+                    return RedirectToAction("DoctorSchedule", "Doctor");
+
+                return RedirectToAction("Index", "Home");
+            }
+            ViewBag.Error = "Tên đăng nhập hoặc mật khẩu không chính xác.";
+            return View();
+        }
+
+        public ActionResult Register()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult Register(string fullName, string email, string phoneNumber, string username, string role, string password, string rolePassword)
+        {
+            var user = new User
+            {
+                FullName = fullName,
+                Email = email,
+                PhoneNumber = phoneNumber,
+                Username = username,
+                Role = role,
+                Password = password
+            };
+
+            if (!_accountService.Register(user))
+            {
+                ViewBag.Error = "Tên đăng nhập, email hoặc số điện thoại đã tồn tại.";
+                return View();
+            }
+            return RedirectToAction("Login");
+        }
+
+        public ActionResult Logout()
+        {
+            FormsAuthentication.SignOut();
+            Session.Clear();
+            return RedirectToAction("Index", "Home");
+        }
+
+        [Authorize]
+        public ActionResult BookingForm()
+        {
+            if (Session["UserId"] == null)
+                return RedirectToAction("Login", "Account");
+
+            ViewBag.Doctors = _accountService.GetDoctors();
+            return View("~/Views/DichVu/Form.cshtml");
+        }
+
+        [HttpPost]
+        [Authorize]
+        public ActionResult SubmitBooking(string diachi, string ngayHen, string gioHen, string moTa, decimal? giaTien, int? doctorId = null)
+        {
+
+
+            if (Session["UserId"] == null)
+            {
+                return RedirectToAction("Login", "Account");
+            }
+
+            var booking = new Booking
+            {
+                FullName = Session["FullName"]?.ToString(),
+                PhoneNumber = Session["PhoneNumber"]?.ToString(),
+                Email = Session["Email"]?.ToString(),
+                DiaChi = diachi,
+                NgayHen = DateTime.Parse(ngayHen),
+                GioHen = TimeSpan.Parse(gioHen),
+                MoTa = moTa,
+                GiaTien = giaTien ?? 0,
+                UserId = Convert.ToInt32(Session["UserId"]),
+                DoctorId = doctorId
+            };
+
+            if (!_accountService.Booking(booking))
+            {
+                ViewBag.Error = "Đã xảy ra lỗi trong quá trình đặt lịch.";
+                ViewBag.Doctors = _accountService.GetDoctors();
+                return View("~/Views/DichVu/Form.cshtml");
+            }
+
+            ViewBag.Message = "Đặt lịch thành công!";
+            return View("~/Views/DichVu/Form.cshtml");
+        }
+        [HttpGet]
+        public ActionResult RegisterWithRole(string role)
+        {
+            ViewBag.SelectedRole = role;
+            return View("Register"); // Đảm bảo tên view là "Register"
+        }
+
+    }
+}
