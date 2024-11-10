@@ -62,6 +62,24 @@ namespace fish.WebApplication.Controllers
         [HttpPost]
         public ActionResult Register(string fullName, string email, string phoneNumber, string username, string role, string password, string rolePassword)
         {
+
+            // Mật khẩu cấp quyền (có thể lưu trong file cấu hình thay vì mã cứng)
+            const string adminRolePassword = "admin";
+            const string doctorRolePassword = "doctor";
+
+            // Kiểm tra quyền truy cập dựa trên role và rolePassword
+            if (role == "Admin" && rolePassword != adminRolePassword)
+            {
+                ViewBag.Error = "Mật khẩu cấp quyền cho vai trò Admin không chính xác.";
+                return View();
+            }
+            if (role == "Doctor" && rolePassword != doctorRolePassword)
+            {
+                ViewBag.Error = "Mật khẩu cấp quyền cho vai trò Doctor không chính xác.";
+                return View();
+            }
+            
+
             var user = new User
             {
                 FullName = fullName,
@@ -77,6 +95,8 @@ namespace fish.WebApplication.Controllers
                 ViewBag.Error = "Tên đăng nhập, email hoặc số điện thoại đã tồn tại.";
                 return View();
             }
+
+            ViewBag.Error = "Tạo tài khoản thành công";
             return RedirectToAction("Login");
         }
 
