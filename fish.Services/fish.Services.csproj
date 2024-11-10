@@ -82,6 +82,7 @@
     <Compile Include="Interfaces\Index4Service.cs" />
     <Compile Include="Interfaces\Index5Service.cs" />
     <Compile Include="Interfaces\Index6Service.cs" />
+    <Compile Include="Interfaces\IPublicMessageService.cs" />
     <Compile Include="Interfaces\IServiceModelService.cs" />
     <Compile Include="Interfaces\IUserService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -97,6 +98,7 @@
     <Compile Include="Services\Index4Service.cs" />
     <Compile Include="Services\Index5Service.cs" />
     <Compile Include="Services\Index6Service.cs" />
+    <Compile Include="Services\PublicMessageService.cs" />
     <Compile Include="Services\ServiceModelService.cs" />
     <Compile Include="Services\UserService.cs" />
   </ItemGroup>

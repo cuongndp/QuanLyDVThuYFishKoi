@@ -77,6 +77,9 @@
                 .additional-links a:hover {
                     text-decoration: underline;
                 }
+        .back-home {
+            margin-top: 10px;
+        }
     </style>
 </head>
 <body>
@@ -106,6 +109,18 @@
         <div class="additional-links">
             <p>Tạo tài khoản <a href="@Url.Action("Register", "Account")">Đăng ký</a></p>
         </div>
+
+
+
+
+        <!-- Thêm đường dẫn quay lại trang chủ -->
+        <div class="back-home">
+            <a href="@Url.Action("Index", "Home")">Quay lại trang chủ</a>
+        </div>
+
+
+
+
     </div>
 </body>
 </html>

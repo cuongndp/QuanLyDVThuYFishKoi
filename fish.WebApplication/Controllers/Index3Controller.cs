@@ -1,26 +1,63 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
+﻿using System.Web.Mvc;
+using Fish.Services.Interfaces;
+using Fish.Repositories.Models;
 using fish.Services.Interfaces;
+using fish.Services.Services;
 
-namespace fish.WebApplication.Controllers
+namespace Fish.WebApplication.Controllers
 {
     public class Index3Controller : Controller
     {
-        private readonly IIndex3Service _index3Service;
+        private readonly IPublicMessageService _publicMessageService;
 
-        public Index3Controller(IIndex3Service index3Service)
+        private readonly IUserService _userService; // Thêm IUserService
+
+        public Index3Controller(IPublicMessageService publicMessageService, IUserService userService)
         {
-            _index3Service = index3Service;
+            _publicMessageService = publicMessageService;
+
+            _userService = userService; // Gán userService
         }
 
-        // GET: Index1
+        // GET: PublicMessage
         public ActionResult Index()
         {
-            _index3Service.DoNothing(); // Gọi service nếu có logic nào trong tương lai
-            return View();
+            // Kiểm tra xem người dùng đã đăng nhập hay chưa
+            if (Session["UserId"] == null)
+            {
+                return RedirectToAction("Login", "Account");
+            }
+            var messages = _publicMessageService.GetAllMessages();
+            return View(messages); // Trả về danh sách tin nhắn để hiển thị trên view
+        }
+
+        // POST: PublicMessage/Add
+        [HttpPost]
+        public ActionResult Add(string noiDung)
+        {
+
+            // Kiểm tra xem người dùng đã đăng nhập hay chưa
+            if (Session["UserId"] == null)
+            {
+                return Json(new { error = "Bạn cần phải đăng nhập để gửi tin nhắn." });
+            }
+
+
+            if (!string.IsNullOrWhiteSpace(noiDung))
+            {
+
+                int userId = (int)Session["UserId"]; // Lấy ID người dùng từ Session
+                var message = new PublicMessage
+                {
+                    UserId = userId,
+                    NoiDung = noiDung
+                };
+                _publicMessageService.AddMessage(message);
+
+                return Json(new { noiDung = message.NoiDung });
+            }
+
+            return Json(new { error = "Nội dung tin nhắn không được để trống" });
         }
     }
 }

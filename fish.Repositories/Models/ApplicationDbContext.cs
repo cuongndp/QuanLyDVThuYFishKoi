@@ -21,6 +21,7 @@ namespace Fish.Repositories
         public DbSet<Booking> Bookings { get; set; }
         public DbSet<ServiceModel> ServiceModels { get; set; }
 
+        public DbSet<PublicMessage> PublicMessages { get; set; }
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);

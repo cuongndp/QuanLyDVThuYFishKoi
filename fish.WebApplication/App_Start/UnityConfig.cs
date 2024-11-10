@@ -2,7 +2,11 @@
 using fish.Repositories.Repositories;
 using fish.Services.Interfaces;
 using fish.Services.Services;
+using Fish.Repositories.Interfaces;
+using Fish.Services.Interfaces;
+using Fish.Services.Services;
 using System.Web.Mvc;
+using Fish.Repositories;
 using Unity;
 using Unity.Mvc5;
 
@@ -23,6 +27,15 @@ namespace fish.WebApplication
             container.RegisterType<IUserRepository, UserRepository>();
             container.RegisterType<IBookingRepository, BookingRepository>();
             container.RegisterType<IServiceModelRepository, ServiceModelRepository>();
+
+            // Đăng ký các service cần thiết vào container
+            container.RegisterType<IIndex3Service, Index3Service>(); // Nếu có Index3Service
+            container.RegisterType<IPublicMessageService, PublicMessageService>(); // Đăng ký IPublicMessageService
+            container.RegisterType<IPublicMessageRepository, PublicMessageRepository>(); // Đăng ký IPublicMessageRepository
+
+
+            container.RegisterType<IUserService, UserService>();
+
 
             // Đăng ký các Service
             container.RegisterType<IAccountService, AccountService>();

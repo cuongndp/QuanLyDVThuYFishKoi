@@ -23,6 +23,13 @@ namespace fish.Services.Services
             return _userRepository.GetAllUsers();
         }
 
+        // Lấy danh sách bác sĩ
+        public IEnumerable<User> GetDoctors()
+        {
+            return _userRepository.GetDoctors();
+        }
+
+
         public User GetUserById(int id)
         {
             return _userRepository.GetUserById(id);
