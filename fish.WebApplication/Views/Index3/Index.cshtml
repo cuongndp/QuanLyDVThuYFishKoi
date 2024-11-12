@@ -1,32 +1,70 @@
 ﻿@model IEnumerable<Fish.Repositories.Models.PublicMessage>
+@{
+    // Kiểm tra vai trò của người dùng: nếu không phải "Doctor" thì sử dụng layout
+    var isDoctor = Session["Role"]?.ToString() == "Doctor";
+    Layout = isDoctor ? null : "~/Views/Shared/_Layout.cshtml";
+}
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Danh sách tin nhắn công khai</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f0f0f0;
-            margin: 0;
-            padding: 20px;
-        }
 
-        .container {
-            max-width: 600px;
-            margin: 0 auto;
-            background-color: #fff;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
 
-        .message {
-            padding: 10px;
-            border-bottom: 1px solid #ddd;
-        }
+@if (isDoctor)
+{
+
+
+
+
+
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Danh sách tin nhắn công khai</title>
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                background-color: #f0f0f0;
+                margin: 0;
+                padding: 20px;
+            }
+
+            .container {
+                max-width: 600px;
+                margin: 0 auto;
+                background-color: #fff;
+                padding: 20px;
+                border-radius: 8px;
+                box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            }
+
+            .message {
+                padding: 10px;
+                border-bottom: 1px solid #ddd;
+            }
+
+            .menuu {
+                display: flex;
+                justify-content: center;
+                gap: 20px;
+                margin-bottom: 20px;
+                padding: 10px;
+                background-color: #007bff;
+                color: #fff;
+                border-radius: 8px;
+            }
+
+                .menuu a {
+                    color: #fff;
+                    text-decoration: none;
+                    font-weight: bold;
+                    transition: color 0.3s;
+                }
+
+                    .menuu a:hover {
+                        color: #f0f0f0;
+                    }
+
+
 
             .message:last-child {
                 border-bottom: none;
@@ -36,39 +74,107 @@
                 color: #333;
             }
 
-        form {
-            margin-top: 20px;
-        }
-
-        label {
-            display: block;
-            margin-bottom: 5px;
-            font-weight: bold;
-        }
-
-        textarea {
-            width: 100%;
-            padding: 10px;
-            margin-bottom: 10px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-        }
-
-        input[type="submit"] {
-            background-color: #007bff;
-            color: #fff;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-
-            input[type="submit"]:hover {
-                background-color: #0056b3;
+            form {
+                margin-top: 20px;
             }
-    </style>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script>
+
+            label {
+                display: block;
+                margin-bottom: 5px;
+                font-weight: bold;
+            }
+
+            textarea {
+                width: 100%;
+                padding: 10px;
+                margin-bottom: 10px;
+                border: 1px solid #ccc;
+                border-radius: 4px;
+            }
+
+            input[type="submit"] {
+                background-color: #007bff;
+                color: #fff;
+                padding: 10px 20px;
+                border: none;
+                border-radius: 4px;
+                cursor: pointer;
+            }
+
+                input[type="submit"]:hover {
+                    background-color: #0056b3;
+                }
+
+
+
+
+
+
+
+            .custom-menu {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: 20px;
+                background-color: #007bff;
+                color: #fff;
+                padding: 10px 20px;
+                border-radius: 8px;
+            }
+
+                .custom-menu a {
+                    color: #fff;
+                    text-decoration: none;
+                    font-weight: bold;
+                    transition: color 0.3s;
+                }
+
+                    .custom-menu a:hover {
+                        color: #f0f0f0;
+                    }
+
+            .custom-user-menu {
+                list-style: none;
+                display: flex;
+                align-items: center;
+                gap: 15px;
+                margin-left: auto;
+            }
+
+                .custom-user-menu li {
+                    display: flex;
+                    align-items: center;
+                }
+
+            .custom-menu-link {
+                color: #fff;
+                text-decoration: none;
+                transition: color 0.3s;
+            }
+
+                .custom-menu-link:hover {
+                    color: #f0f0f0;
+                }
+
+            .custom-logged-in-info .custom-user-greeting {
+                margin-right: 10px;
+                color: #007bff; /* Màu xanh nhạt */
+                font-weight: bold;
+            }
+
+            .custom-logout-link {
+                color: #ff5555; /* Màu đỏ nổi bật */
+                text-decoration: none;
+                font-weight: bold;
+                transition: color 0.3s;
+            }
+
+                .custom-logout-link:hover {
+                    color: #007bff; /* Màu đỏ đậm hơn khi hover */
+                }
+        </style>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script>
         $(document).ready(function () {
             $("#messageForm").submit(function (event) {
                 event.preventDefault(); // Ngăn chặn việc làm mới trang
@@ -97,32 +203,109 @@
                 });
             });
         });
-    </script>
-</head>
-<body>
-    <div class="container">
-        <h2>Danh sách tin nhắn công khai</h2>
+        </script>
+    </head>
+    <body>
 
-        <div id="messages">
-            @foreach (var message in Model)
+
+
+
+
+        <ul class="custom-user-menu">
+            @if (Session["FullName"] != null)
             {
-                <div class="message">
-                    <strong>@message.User.FullName:</strong> @message.NoiDung
+                <li class="custom-logged-in-info">
+                    <span class="custom-user-greeting">Xin chào, @Session["FullName"]!</span>
+                    <a href="@Url.Action("Logout", "Account")" class="custom-logout-link">Đăng xuất</a>
+                </li>
+            }
+            else
+            {
+                <li>@Html.ActionLink("Đăng ký", "Register", "Account", null, new { @class = "custom-menu-link" })</li>
+                <li>@Html.ActionLink("Đăng nhập", "Login", "Account", null, new { @class = "custom-menu-link" })</li>
+            }
+        </ul>
+
+
+
+
+
+
+
+
+        <div class="menuu">
+            <a href="@Url.Action("DoctorSchedule", "Doctor")">Lịch khám</a>
+            <a href="@Url.Action("Index", "Index3")">Câu hỏi</a>
+        </div>
+
+
+
+
+
+
+
+
+        <div class="container">
+            <h2>Danh sách tin nhắn công khai</h2>
+
+            <div id="messages">
+                @foreach (var message in Model)
+                {
+                    <div class="message">
+                        <strong>@message.User.FullName:</strong> @message.NoiDung
+                    </div>
+                }
+            </div>
+
+            <h3>Thêm tin nhắn mới</h3>
+            @using (Html.BeginForm("Add", "PublicMessage", FormMethod.Post, new { id = "messageForm" }))
+            {
+                <div>
+                    <label for="noiDung">Nội dung tin nhắn:</label>
+                    @Html.TextArea("noiDung", new { id = "noiDung", rows = 3 })
+                </div>
+                <div>
+                    <input type="submit" value="Gửi tin nhắn" />
                 </div>
             }
         </div>
+    </body>
+</html>
 
-        <h3>Thêm tin nhắn mới</h3>
-        @using (Html.BeginForm("Add", "PublicMessage", FormMethod.Post, new { id = "messageForm" }))
+
+
+
+}
+
+
+else
+{
+
+<div class="custom-container">
+    <h2 class="custom-title">Danh sách tin nhắn công khai</h2>
+
+    <div id="messages" class="custom-messages">
+        @foreach (var message in Model)
         {
-            <div>
-                <label for="noiDung">Nội dung tin nhắn:</label>
-                @Html.TextArea("noiDung", new { id = "noiDung", rows = 3 })
-            </div>
-            <div>
-                <input type="submit" value="Gửi tin nhắn" />
+            <div class="custom-message">
+                <strong class="custom-message-author">@message.User.FullName:</strong>
+                <span class="custom-message-content">@message.NoiDung</span>
             </div>
         }
     </div>
-</body>
-</html>
+
+    <h3 class="custom-add-message-title">Thêm tin nhắn mới</h3>
+    @using (Html.BeginForm("Add", "PublicMessage", FormMethod.Post, new { id = "messageForm", @class = "custom-form" }))
+    {
+        <div class="custom-form-group">
+            <label for="noiDung" class="custom-label">Nội dung tin nhắn:</label>
+            @Html.TextArea("noiDung", new { id = "noiDung", rows = 3, @class = "custom-textarea" })
+        </div>
+        <div class="custom-form-group">
+            <input type="submit" value="Gửi tin nhắn" class="custom-submit-button" />
+        </div>
+    }
+</div>
+
+
+}
