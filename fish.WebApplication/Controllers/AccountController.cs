@@ -107,51 +107,25 @@ namespace fish.WebApplication.Controllers
             return RedirectToAction("Index", "Home");
         }
 
-        [Authorize]
-        public ActionResult BookingForm()
-        {
-            if (Session["UserId"] == null)
-                return RedirectToAction("Login", "Account");
-
-            ViewBag.Doctors = _accountService.GetDoctors();
-            return View("~/Views/DichVu/Form.cshtml");
-        }
-
-        [HttpPost]
-        [Authorize]
-        public ActionResult SubmitBooking(string diachi, string ngayHen, string gioHen, string moTa, decimal? giaTien, int? doctorId = null)
-        {
 
 
-            if (Session["UserId"] == null)
-            {
-                return RedirectToAction("Login", "Account");
-            }
 
-            var booking = new Booking
-            {
-                FullName = Session["FullName"]?.ToString(),
-                PhoneNumber = Session["PhoneNumber"]?.ToString(),
-                Email = Session["Email"]?.ToString(),
-                DiaChi = diachi,
-                NgayHen = DateTime.Parse(ngayHen),
-                GioHen = TimeSpan.Parse(gioHen),
-                MoTa = moTa,
-                GiaTien = giaTien ?? 0,
-                UserId = Convert.ToInt32(Session["UserId"]),
-                DoctorId = doctorId
-            };
 
-            if (!_accountService.Booking(booking))
-            {
-                ViewBag.Error = "Đã xảy ra lỗi trong quá trình đặt lịch.";
-                ViewBag.Doctors = _accountService.GetDoctors();
-                return View("~/Views/DichVu/Form.cshtml");
-            }
+        //phong
 
-            ViewBag.Message = "Đặt lịch thành công!";
-            return View("~/Views/DichVu/Form.cshtml");
-        }
+
+
+
+
+
+
+
+        //phong
+
+
+
+
+
         [HttpGet]
         public ActionResult RegisterWithRole(string role)
         {
