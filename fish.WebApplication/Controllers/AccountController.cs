@@ -115,10 +115,18 @@ namespace fish.WebApplication.Controllers
 
 
 
+        [Authorize]
+        public ActionResult BookingForm()
+        {
+            if (Session["UserId"] == null)
+                return RedirectToAction("Login", "Account");
 
-
-
-
+            ViewBag.Doctors = _accountService.GetDoctors();
+            return View("~/Views/DichVu/Form.cshtml");
+        }
+        
+        //.... chỗ còn thiếu
+        
 
         //phong
 
