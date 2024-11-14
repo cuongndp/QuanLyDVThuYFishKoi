@@ -155,7 +155,8 @@ namespace fish.WebApplication.Controllers
                 ViewBag.Doctors = _accountService.GetDoctors();
                 return View("~/Views/DichVu/Form.cshtml");
             }
-
+            ViewBag.Message = "Đặt lịch thành công!";
+            return View("~/Views/DichVu/Form.cshtml");
 
         }
 
