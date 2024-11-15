@@ -20,39 +20,38 @@ namespace fish.WebApplication.Controllers
             _accountService = accountService;
         }
 
-        public ActionResult Login()
-        {
-            return View();
-        }
-
-        [HttpPost]
-        public ActionResult Login(string username, string password)
-        {
-            var user = _accountService.Login(username, password);
-            if (user != null)
-            {
-                Session["UserId"] = user.Id;
-                Session["FullName"] = user.FullName;
-                Session["PhoneNumber"] = user.PhoneNumber;
-                Session["Email"] = user.Email;
-                Session["Role"] = user.Role;
+        //
+      
 
 
 
-                // Đặt cookie xác thực
-                FormsAuthentication.SetAuthCookie(username, false);
 
 
-                if (user.Role == "Admin")
-                    return RedirectToAction("AdminOnlyAction", "Admin");
-                if (user.Role == "Doctor")
-                    return RedirectToAction("DoctorSchedule", "Doctor");
 
-                return RedirectToAction("Index", "Home");
-            }
-            ViewBag.Error = "Tên đăng nhập hoặc mật khẩu không chính xác.";
-            return View();
-        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        //
 
         public ActionResult Register()
         {
