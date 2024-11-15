@@ -21,7 +21,28 @@ namespace fish.WebApplication.Controllers
         }
 
         //
-      
+        public ActionResult Login()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult Login(string username, string password)
+        {
+            var user = _accountService.Login(username, password);
+            //
+
+
+
+
+
+            
+
+
+
+
+            //
+        }
 
 
 
@@ -51,9 +72,9 @@ namespace fish.WebApplication.Controllers
 
 
 
-        //
+                //
 
-        public ActionResult Register()
+                public ActionResult Register()
         {
             return View();
         }
