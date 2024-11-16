@@ -20,7 +20,7 @@ namespace fish.WebApplication.Controllers
             _accountService = accountService;
         }
 
-        //
+
         public ActionResult Login()
         {
             return View();
@@ -49,14 +49,11 @@ namespace fish.WebApplication.Controllers
                 if (user.Role == "Doctor")
                     return RedirectToAction("DoctorSchedule", "Doctor");
 
-                //
+                return RedirectToAction("Index", "Home");
             }
-            //////
-
-
-
-
-              
+            ViewBag.Error = "Tên đăng nhập hoặc mật khẩu không chính xác.";
+            return View();
+        }​
 
                 public ActionResult Register()
         {
