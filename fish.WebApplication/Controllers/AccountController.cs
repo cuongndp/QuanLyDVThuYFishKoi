@@ -53,9 +53,14 @@ namespace fish.WebApplication.Controllers
             }
             ViewBag.Error = "Tên đăng nhập hoặc mật khẩu không chính xác.";
             return View();
-        }​
+        }
+        
 
-                public ActionResult Register()
+
+
+
+
+        public ActionResult Register()
         {
             return View();
         }
