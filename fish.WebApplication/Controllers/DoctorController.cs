@@ -16,6 +16,18 @@ namespace fish.WebApplication.Controllers
             _doctorService = doctorService;
         }
 
-        //....
+        public ActionResult DoctorSchedule()
+        {
+            if (Session["UserId"] == null || Session["Role"]?.ToString() != "Doctor")
+            {
+                return RedirectToAction("Login", "Account");
+            }
+
+            // Lấy danh sách các lịch khám mà bác sĩ được gán
+            int doctorId = Convert.ToInt32(Session["UserId"]);
+            var bookings = _doctorService.GetBookingsForDoctor(doctorId);
+
+            return View("~/Views/Doctor/DoctorSchedule.cshtml", bookings);
+        }
     }
 }
