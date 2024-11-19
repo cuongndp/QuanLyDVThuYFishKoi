@@ -2,74 +2,143 @@
 @{
     ViewBag.Title = "Index";
 }
+<style>
+   .contact-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    padding: 40px;
+    backdrop-filter: blur(15px);
+    max-width: 1000px;
+    width: 90%;
+    margin: 40px auto;
+}
 
-            <!--==============================content================================-->
-            <section id="content">
-                <div class="div-main">
-                    <div class="div-main-indent">
-                        <div class="container_24">
-                            <div class="wrapper">
-                                <div class="grid_8 suffix_1">
-                                    <h2 class="padd-2">find us</h2>
-                                    <iframe id="map_canvas" src="http://maps.google.com/maps?f=q&amp;source=s_q&amp;hl=en&amp;geocode=&amp;q=Brooklyn,+New+York,+NY,+United+States&amp;aq=0&amp;sll=37.0625,-95.677068&amp;sspn=61.282355,146.513672&amp;ie=UTF8&amp;hq=&amp;hnear=Brooklyn,+Kings,+New+York&amp;ll=40.649974,-73.950005&amp;spn=0.01628,0.025663&amp;z=14&amp;iwloc=A&amp;output=embed">
-                                    </iframe>
-                                    <dl class="adress">
-                                        <dt class="title1">8901 Marmora Road,<br> Glasgow, D04 89GR.</dt>
-                                        <dd><span>Freephone:</span>+1 800 559 6580</dd>
-                                        <dd><span>Telephone:</span>+1 959 603 6035</dd>
-                                        <dd><span>FAX:</span>+1 504 889 9898</dd>
-                                        <dd><strong>E-mail:</strong> <a href="#">mail@demolink.org</a></dd>
-                                    </dl>
-                                </div>
-                                <div class="grid_15">
-                                    <div class="box-15">
-                                        <h2>get in touch</h2>
-                                        <form id="form1">
-                                            <fieldset>
-                                                <div class="success">
-                                                    Contact form submitted!<br>
-                                                    <strong>We will be in touch soon.</strong>
-                                                </div>
-                                                <label class="name wrapper-after">
-                                                    <input type="text" value="Tên:">
-                                                    <span class="error error-empty">*This is not a valid name.</span> <span class="empty error-empty">*This field is required.</span>
-                                                </label><div class="clear"></div>
-                                                <label class="email wrapper-after">
-                                                    <input type="text" value="Email:">
-                                                    <span class="error error-empty">*This is not a valid email address.</span> <span class="empty error-empty">*This field is required.</span>
-                                                </label><div class="clear"></div>
-                                                <label class="phone wrapper-after">
-                                                    <input type="text" value="Số điện thoại:">
-                                                    <span class="error error-empty">*This is not a valid phone number.</span> <span class="empty error-empty">*This field is required.</span>
-                                                </label><div class="clear"></div>
-                                                <label class="message wrapper-after">
-                                                    <textarea class="img-shadow">Nội dung:</textarea>
-                                                    <span class="error">*The message is too short.</span> <span class="empty">*This field is required.</span>
-                                                </label>
-                                                <div class="clear"></div>
-                                                <div class="buttons2">
-                                                    <a href="#" data-type="submit" class="button">Gửi</a>
-                                                    <div class="clear"></div>
-                                                </div>
-                                                <div class="clear"></div>
-                                            </fieldset>
-                                        </form>
-                                    </div>
-                                </div>
-                            </div><!--the end of wrapper-->
-                        </div>
-                    </div>
-                </div>
-            </section>
-            <!--==============================footer=================================-->
-            <footer>
-                <div class="main-footer">
+/* Phần liên hệ qua Zalo */
+.zalo-section {
+    text-align: center;
+    padding: 20px;
+    background: linear-gradient(135deg, #0078ff, #0056c2);
+    color: #ffffff;
+    border-radius: 16px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+}
 
-                    <div class="main-foot-1">
-                        <p>aquarius &copy; 2012 <img src="~/images/arrow-footer.jpg" alt="">  @Html.ActionLink("Thông tin", "Index", "Index6")</p>
-                    </div>
-                </div>
-                <div class="main-footer-1">
-                </div>
-            </footer>
-        
+    .zalo-section h2 {
+        font-size: 28px;
+        font-weight: bold;
+        margin-bottom: 15px;
+        background: linear-gradient(to right, #ffafbd, #ffc3a0);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+    .zalo-section p {
+        font-size: 16px;
+        margin-bottom: 20px;
+        line-height: 1.6;
+    }
+
+.qr-code {
+    margin: 20px auto;
+    background: #ffffff;
+    padding: 15px;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+    .qr-code img {
+        width: 100%; /* Đảm bảo ảnh chiếm đầy khung */
+        max-width: 400px; /* Đặt giới hạn tối đa */
+        height: auto; /* Giữ tỉ lệ ảnh */
+        object-fit: cover; /* Cắt và căn chỉnh nội dung nếu cần */
+    }
+
+.contact-button {
+    display: inline-block;
+    margin-top: 20px;
+    padding: 12px 25px;
+    font-size: 16px;
+    font-weight: bold;
+    color: #ffffff;
+    background: linear-gradient(to right, #00b09b, #96c93d);
+    border-radius: 30px;
+    text-decoration: none;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+    .contact-button:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+    }
+
+/* Phần bản đồ */
+.map-section {
+    text-align: center;
+    padding: 20px;
+    background: linear-gradient(135deg, #34e89e, #0f3443);
+    color: #ffffff;
+    border-radius: 16px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+}
+
+    .map-section h2 {
+        font-size: 28px;
+        font-weight: bold;
+        margin-bottom: 15px;
+        background: linear-gradient(to right, #ff758c, #ff7eb3);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+    .map-section p {
+        font-size: 16px;
+        margin-bottom: 20px;
+        line-height: 1.6;
+    }
+
+.map-container {
+    width: 100%;
+    max-width: 400px;
+    height: 500px;
+    margin: 0 auto;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+/* Responsive */
+
+</style>
+<body>
+    <div class="contact-container">
+        <link href="~/css/Lienhe.css" rel="stylesheet" />
+        <!-- Phần liên hệ qua Zalo -->
+        <div class="zalo-section">
+            <h2>Liên hệ qua Zalo</h2>
+            <p>Quét mã QR hoặc nhấn nút bên dưới để kết nối ngay với Trung tâm Thú y Cá Koi.</p>
+            <div class="qr-code">
+                <img src="~/images/qr.jpg" />
+            </div>
+            <a href="https://zalo.me/0706259406" class="contact-button">Kết nối ngay</a>
+        </div>
+
+        <!-- Phần bản đồ -->
+        <div class="map-section">
+            <h2>Địa chỉ trung tâm</h2>
+            <p>71 Đ. Tô Ký</p>
+            <div class="map-container">
+                <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d15672.658630994612!2d106.611559!3d10.875078!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31752a0a68720521%3A0x2c5c1681b785294e!2zNzEgxJAuIFTDtCBLw70sIEtodSBwaOG7kSAyLCBRdeG6rW4gMTIsIEjhu5MgQ2jDrSBNaW5oIDcwMDAwLCBWaWV0bmFt!5e0!3m2!1sen!2sus!4v1731983715966!5m2!1sen!2sus"
+                        width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy"
+                        referrerpolicy="no-referrer-when-downgrade"></iframe>
+            </div>
+        </div>
+    </div>
+    </div>
+</body>
+
+
+
