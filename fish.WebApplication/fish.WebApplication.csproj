@@ -167,7 +167,10 @@
     <Content Include="Content\bootstrap.rtl.min.css" />
     <Content Include="css\grid_24.css" />
     <Content Include="css\header.css" />
+    <Content Include="css\home.css" />
     <Content Include="css\ie.css" />
+    <Content Include="css\Layout.css" />
+    <Content Include="css\lienhe.css" />
     <Content Include="css\prettyPhoto-1.css" />
     <Content Include="css\reset.css" />
     <Content Include="css\style.css" />
@@ -275,6 +278,10 @@
     <Content Include="images\slide-6.png" />
     <Content Include="images\slide.png" />
     <Content Include="images\prettyPhoto\trangchu.jfif" />
+    <Content Include="images\z6056652180503_836868c919a481fee6bd96dd6ebdc050.jpg" />
+    <Content Include="images\z6056652193545_6206149aa832064155841776f4c2fcc0.jpg" />
+    <Content Include="images\z6056652193546_969fe52471c9d1a52b96c4b4cc74ef74.jpg" />
+    <Content Include="images\z6056652976923_e59980bf14d347cd15e64065ccaab4be.jpg" />
     <Content Include="js\forms.js" />
     <Content Include="js\html5.js" />
     <Content Include="js\jquery-1.7.min.js" />

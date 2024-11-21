@@ -1,0 +1,77 @@
+
+.custom-container {
+    max-width: 600px;
+    margin: 0 auto;
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    font-family: Arial, sans-serif;
+}
+
+.custom-title, .custom-add-message-title {
+    color: #333;
+    text-align: center;
+    margin-bottom: 20px;
+    font-weight: bold;
+}
+
+.custom-messages {
+    margin-bottom: 20px;
+}
+
+.custom-message {
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+}
+
+    .custom-message:last-child {
+        border-bottom: none;
+    }
+
+.custom-message-author {
+    color: #007bff;
+    font-weight: bold;
+}
+
+.custom-message-content {
+    color: #555;
+}
+
+.custom-form {
+    margin-top: 20px;
+}
+
+.custom-form-group {
+    margin-bottom: 15px;
+}
+
+.custom-label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: #333;
+}
+
+.custom-textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-family: inherit;
+}
+
+.custom-submit-button {
+    background-color: #007bff;
+    color: #ffffff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.3s;
+}
+
+    .custom-submit-button:hover {
+        background-color: #0056b3;
+    }
