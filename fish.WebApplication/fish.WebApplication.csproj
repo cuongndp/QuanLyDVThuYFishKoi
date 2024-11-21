@@ -282,6 +282,7 @@
     <Content Include="images\z6056652193545_6206149aa832064155841776f4c2fcc0.jpg" />
     <Content Include="images\z6056652193546_969fe52471c9d1a52b96c4b4cc74ef74.jpg" />
     <Content Include="images\z6056652976923_e59980bf14d347cd15e64065ccaab4be.jpg" />
+    <Content Include="images\zalo.pgd.jpg" />
     <Content Include="js\forms.js" />
     <Content Include="js\html5.js" />
     <Content Include="js\jquery-1.7.min.js" />
